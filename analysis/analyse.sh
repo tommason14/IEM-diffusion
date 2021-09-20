@@ -1,15 +1,15 @@
 #!/bin/sh
-EM='../../../pack/em.mdp'
+MDP='../../../pack/em.mdp' # any options can be included - just need to create a tpr for gmx tools
 GRO='../../npt/equil.gro'
 TOP='../../../pack/topol.top'
 XTC='../output.xtc'
 UXTC='unwrapped.xtc'
 TPR='em.tpr'
 
-gmx_mpi grompp -f $EM -c $GRO -p $TOP -o $TPR
+gmx_mpi grompp -f $MDP -c $GRO -p $TOP -o $TPR
 echo System | gmx_mpi trjconv -s $TPR -f $XTC -pbc nojump -o $UXTC
-echo 2 | gmx_mpi dipoles -f $UXTC -s $EM > dipoles.log
-gmx_mpi rdf -f $UXTC -s $EM -ref 'name "S*"' -sel 'name "S*"' -o s-s-rdf.xvg
+echo 2 | gmx_mpi dipoles -f $UXTC -s $TPR > dipoles.log
+gmx_mpi rdf -f $UXTC -s $TPR -ref 'name "S*"' -sel 'name "S*"' -o s-s-rdf.xvg
 dielectric="$(tail -1 dipoles.log | getcol -1)"
 sep="$(grep -v '^[#@]' s-s-rdf.xvg | sort -k2n | tail -1 | awk '{print $1*10}')"
 calc_bjerrum_length.py -d $dielectric -s $sep > bjerrum.txt
