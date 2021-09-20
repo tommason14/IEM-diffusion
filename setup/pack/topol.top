@@ -1,0 +1,62 @@
+;
+;   File polymer.top  was generated
+;   By user: tmas0023 (290302666)
+;   On host: MU00151959X
+;   At date: Fri. April  5 13:33:46 2021
+;
+;   This is a standalone topology file
+;
+;   Created by:
+;   ParmEd:       amber_to_gmx.py, VERSION 3.2.0
+;   Executable:   amber_to_gmx.py
+;   Library dir:  /usr/local/Cellar/gromacs/2020.4/share/gromacs/top
+;   Command line:
+;     /Users/tmas0023/.local/scripts/chem/lammps/lammps_to_gromacs_gaff/amber_to_gmx.py
+;
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               2               yes             0.5          0.83333333  
+
+[ atomtypes ]
+; name    at.num    mass    charge ptype  sigma      epsilon
+c3             6  12.010000  0.00000000  A     0.33996695      0.4577296
+ha             1   1.008000  0.00000000  A     0.25996425        0.06276
+oh             8  16.000000  0.00000000  A     0.30664734      0.8803136
+h1             1   1.008000  0.00000000  A      0.2471353      0.0656888
+hc             1   1.008000  0.00000000  A     0.26495328      0.0656888
+ca             6  12.010000  0.00000000  A     0.33996695       0.359824
+s6            16  32.060000  0.00000000  A     0.35635949          1.046
+o              8  16.000000  0.00000000  A     0.29599219        0.87864
+
+Cl          17      35.45    0.0000  A   3.47094e-01  1.10876
+Na          11      22.99    0.0000  A   3.32840e-01  1.15897e-02
+; tip4p                                                          
+HW_tip4p     1       1.008   0.0000  A   0.00000e+00  0.00000e+00
+OW_tip4p     8      16.00    0.0000  A   3.15365e-01  6.48520e-01
+; MW=Dummy mass for tip4p/EW/5p water extra point charge         
+MW           0       0.0000  0.0000  D   0.00000e+00  0.00000e+00
+
+#include "tip4p.itp"
+#include "polymer.itp"
+#include "ions.itp"
+
+[ system ]
+; Name
+Polymer in salinated water
+
+[ molecules ]
+; Compound       #mols
+pol                 1
+NA                 24
+pol                 1
+NA                 24
+pol                 1
+NA                 24
+pol                 1
+NA                 24
+pol                 1
+NA                 24
+SOL         13481
+NA               60
+CL               60

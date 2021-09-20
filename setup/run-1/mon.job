@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --job-name=constrained-CC-5-chains
+#SBATCH --ntasks=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=4G
+#SBATCH --gres=gpu:P100:1
+#SBATCH --time=72:00:00
+#SBATCH --partition=gpu
+
+module purge
+module load openmm/7.4
+cd npt
+time python run.py >& npt.err
+
+# Remove dummy atoms
+# MDAnalysis doesn't run properly in the conda env... so use login set up where it does work, then
+# move back into the conda env for the next run
+module purge
+source ~/.bash_profile
+python3 write_gro.py
+
+cd ../nvt
+module purge
+module load openmm/7.4
+time python run.py >& nvt.err
