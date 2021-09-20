@@ -18,11 +18,14 @@ bj="$(getcol -2 bjerrum.txt)"
 traj_convert.py -c $GRO -t $UXTC --sel "name CL and around $bj name S*" -o chlorides.pdb
 traj_convert.py -c $GRO -t $UXTC --sel "name NA and around $bj name S*" -o sodiums.pdb
 
-travis -p sodiums.pdb -i $thisdir/na_input.txt && mv travis.log sodium.log
-travis -p chlorides.pdb -i $thisdir/cl_input.txt && mv travis.log chloride.log
+curl -O https://raw.githubusercontent.com/tommason14/IEM-diffusion/main/analysis/cl_input.txt
+curl -O https://raw.githubusercontent.com/tommason14/IEM-diffusion/main/analysis/na_input.txt
+
+travis -p sodiums.pdb -i na_input.txt && mv travis.log sodium.log
+travis -p chlorides.pdb -i cl_input.txt && mv travis.log chloride.log
 
 # cube root the product of box dimensions - accounts for non-standard boxes
-boxsize="$(tail -1 $gro | awk '{print ($1*$2*$3)**(1/3)*10}')"
+boxsize="$(tail -1 $GRO | awk '{print ($1*$2*$3)**(1/3)*10}')"
 
 # convert to cm^2/s
 na_msd=$(grep "m^2/s" sodium.log | awk '{print $(NF-1)*10**4}')
